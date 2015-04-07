@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Comatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Neighborhood Map Udacity</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/knockout-min.js"></script>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript">
+			google.load('visualization', '1.0', {'packages':['corechart']});
+
+		</script>
+		<script type="text/javascript" src="js/app.js"></script>
+	</head>
+	<body>
+
+		<div id="infoWindow" class="hide">
+			<div id="infoWindowContent">
+				<h2 data-bind="text: name"></h2>
+				<p data-bind="text: contact"></p>
+				<p data-bind="text: address"></p>
+				<p>Rating: <span data-bind="text: rating"></span></p>
+			</div>
+		</div>
+		
+		<div id="full-screen">		
+			<button id="setting" class="btn btn-primary btn-lg" data-toggle="popover" aria-label="Setting">
+				<span class="glyphicon glyphicon-cog" aria-hidden="true">
+				</span>
+			</button>
+					
+			<form id="searchBox" class="input-group input-group-lg" data-bind="submit: updatevenuesModel">
+				<input id="pac_input" class="form-control" type="text" placeholder="type ie:cinema,restaurant">
+				<span class="input-group-btn">
+					<button id="myButton" class="btn btn-primary">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+				</span>
+			</form>
+
+			<button id="listButton" class="btn btn-lg btn-info" data-bind="click: updatenum_unread">
+				Places 
+				<span class="badge" data-bind="text: num_unread"></span>
+			</button>
+			
+			<div id="collapseOne">
+				<div data-bind="visible: display_state() === 2">
+					<h3>
+						You are in category: 
+						<span data-bind="text: category_filter"></span>
+					</h3>
+					<div data-bind="foreach: filtedvenuesModel">
+						<div id="eachPlace" data-bind="click: openInfoWindow">
+  							<hr>
+  							<h3 data-bind="text: name"></h3>
+  							<p>
+  								Phone Number: 
+  								<span data-bind="text: contact"></span>
+  							</p>
+  							<p>
+  								Address: 
+  								<span data-bind="text: address"></span>
+  							</p>
+  							<p>
+  								Category: 
+  								<span data-bind="text: category"></span>
+  							</p>
+  							<p>
+  								Verified: 
+  								<span data-bind="text: verified"></span>
+  							</p>
+  							<p>
+  								Rating: 
+  								<span data-bind="text: rating"></span>
+  							</p>
+						</div>
+					</div>
+				</div>
+				<h3 id="no_result" class="text-center" data-bind="visible: display_state() === 1">
+					no results.<br>
+					Please try a different term!
+				</h3>
+				<h3 id="ajax_failed" class="text-center" data-bind="visible: display_state() === 0">
+					Cannot reach to the server!<br>
+					Please try it later!
+				</h3>
+			</div>
+		
+			<div id="chart_div">
+				<div id="myPieChart" data-bind="visible: display_state() === 2"></div>
+				<img src="images/small_sadface.jpg" alt="sad face" data-bind="visible: display_state() != 2">
+			</div>
+			
+		</div>
+		<div id="map-canvas"></div>
+	</body>
+</html>
